@@ -16,10 +16,3 @@ insert into song_albums(songs_id, albums_id) values(1,3);
 insert into song_albums(songs_id, albums_id) values(1,4);
 insert into song_albums(songs_id, albums_id) values(2,1);
 insert into song_albums(songs_id, albums_id) values(3,2);
-/*
-
-
-
-
-
-*/

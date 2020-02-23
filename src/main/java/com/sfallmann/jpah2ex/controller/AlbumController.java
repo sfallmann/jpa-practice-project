@@ -1,6 +1,6 @@
 package com.sfallmann.jpah2ex.controller;
 
-import java.util.List;
+import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.sfallmann.jpah2ex.domain.Album;
@@ -29,7 +29,7 @@ public class AlbumController {
 
   @RequestMapping("")
   @JsonView(Views.Default.class)
-  public List<Album> allAlbums(
+  public Set<Album> allAlbums(
     @RequestParam(name = "artist_id", required = false) Long artistId,
     @RequestParam(name = "artist_name", required = false) String artistName
     ){

@@ -1,6 +1,6 @@
 package com.sfallmann.jpah2ex.service;
 
-import java.util.List;
+import java.util.Set;
 
 import com.sfallmann.jpah2ex.domain.Album;
 import com.sfallmann.jpah2ex.repository.AlbumRepository;
@@ -24,19 +24,19 @@ public class AlbumService {
     this.albumRepository = albumRepository;
   }
 
-  public List<Album> getAlbums() {
-    return (List<Album>)albumRepository.findAll();
+  public Set<Album> getAlbums() {
+    return (Set<Album>)albumRepository.findAll();
   }
 
   public Album getAlbumById(Long id) {
     return albumRepository.findById(id).orElse(null);
   }
   
-  public List<Album> getAlbumByArtistId(Long artistId) {
-    return albumRepository.findAlbumByArtistId(artistId);
+  public Set<Album> getAlbumByArtistId(Long artistId) {
+    return albumRepository.findAlbumByArtistArtistId(artistId);
   }
 
-  public List<Album> getAlbumByArtistName(String artistName) {
+  public Set<Album> getAlbumByArtistName(String artistName) {
     return albumRepository.findAlbumByArtistName(artistName);
   }
 

@@ -31,4 +31,8 @@ public class ArtistService {
   public Artist getArtistById(Long id) {
     return artistRepository.findById(id).orElse(null);
   }
+
+  public void removeArtist(Long artistId) {
+    artistRepository.deleteById(artistId);
+  }
 }

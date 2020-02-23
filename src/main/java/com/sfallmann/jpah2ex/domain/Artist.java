@@ -1,18 +1,15 @@
 package com.sfallmann.jpah2ex.domain;
 
-import java.util.List;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.JsonView;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import com.sfallmann.jpah2ex.jsonview.Views;
 
 /**
  * Artist
@@ -22,21 +19,16 @@ public class Artist {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,
-  property = "id")  
-  @JsonView(Views.Default.class)
-  private Long id;
-
-  @JsonView(Views.Default.class)
+  @Column(name="artist_id")
+  private Long artistId;
   private String name;
-
-  @JsonView(Views.Default.class)
   private String genre;
 
-  @OneToMany(mappedBy = "artist")
-  @JsonView(Views.Detailed.class)
-  @JsonManagedReference
-  private List<Album> albums;
+  @OneToMany(mappedBy = "artist", cascade = CascadeType.ALL)
+  private Set<Album> albums;
+
+  @OneToMany(mappedBy = "artist", cascade = CascadeType.ALL)
+  private Set<Song> songs;
 
   protected Artist() {
   }
@@ -46,24 +38,25 @@ public class Artist {
    * @param genre
    * @param albums
    */
-  public Artist(String name, String genre, List<Album> albums) {
+  public Artist(String name, String genre, Set<Album> albums, Set<Song> songs) {
     this.name = name;
     this.genre = genre;
     this.albums = albums;
+    this.songs = songs;
   }
 
   /**
-   * @return the id
+   * @return the artistId
    */
-  public Long getId() {
-    return id;
+  public Long getArtistId() {
+    return artistId;
   }
 
   /**
-   * @param id the id to set
+   * @param artistId the artistId to set
    */
-  public void setId(Long id) {
-    this.id = id;
+  public void setArtistId(Long artistId) {
+    this.artistId = artistId;
   }
 
   /**
@@ -97,14 +90,14 @@ public class Artist {
   /**
    * @return the albums
    */
-  public List<Album> getAlbums() {
+  public Set<Album> getAlbums() {
     return albums;
   }
 
   /**
    * @param albums the albums to set
    */
-  public void setAlbums(List<Album> albums) {
+  public void setAlbums(Set<Album> albums) {
     this.albums = albums;
   }
 
@@ -117,6 +110,20 @@ public class Artist {
   @Override
   public String toString() {
     return "Artist [genre=" + genre + ", name=" + name + "]";
+  }
+
+  /**
+   * @return the songs
+   */
+  public Set<Song> getSongs() {
+    return songs;
+  }
+
+  /**
+   * @param songs the songs to set
+   */
+  public void setSongs(Set<Song> songs) {
+    this.songs = songs;
   }
 
 }
