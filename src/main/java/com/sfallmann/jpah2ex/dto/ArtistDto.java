@@ -1,27 +1,30 @@
 package com.sfallmann.jpah2ex.dto;
 
-import java.util.Set;
-
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-
 /**
  * ArtistDto
  */
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "artistId")
 public class ArtistDto {
 
   private Long artistId;
   private String name;
   private String genre;
 
-  @JsonManagedReference
-  private Set<AlbumDto> albums;
+  /**
+   * 
+   */
+  public ArtistDto() {
+  }
 
-  @JsonIgnore
-  private Set<SongDto> songs;
+  /**
+   * @param artistId
+   * @param name
+   * @param genre
+   */
+  public ArtistDto(Long artistId, String name, String genre) {
+    this.artistId = artistId;
+    this.name = name;
+    this.genre = genre;
+  }
 
   /**
    * @return the artistId
@@ -63,51 +66,5 @@ public class ArtistDto {
    */
   public void setGenre(String genre) {
     this.genre = genre;
-  }
-
-  /**
-   * @return the albums
-   */
-  public Set<AlbumDto> getAlbums() {
-    return albums;
-  }
-
-  /**
-   * @param albums the albums to set
-   */
-  public void setAlbums(Set<AlbumDto> albums) {
-    this.albums = albums;
-  }
-
-  /**
-   * @return the songs
-   */
-  public Set<SongDto> getSongs() {
-    return songs;
-  }
-
-  /**
-   * @param songs the songs to set
-   */
-  public void setSongs(Set<SongDto> songs) {
-    this.songs = songs;
-  }
-
-  public ArtistDto() {
-  }
-
-  /**
-   * @param artistId
-   * @param name
-   * @param genre
-   * @param albums
-   * @param songs
-   */
-  public ArtistDto(Long artistId, String name, String genre, Set<AlbumDto> albums, Set<SongDto> songs) {
-    this.artistId = artistId;
-    this.name = name;
-    this.genre = genre;
-    this.albums = albums;
-    this.songs = songs;
   }
 }

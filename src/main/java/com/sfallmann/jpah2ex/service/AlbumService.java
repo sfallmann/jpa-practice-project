@@ -33,11 +33,11 @@ public class AlbumService {
   }
   
   public Set<Album> getAlbumByArtistId(Long artistId) {
-    return albumRepository.findAlbumByArtistArtistId(artistId);
+    return albumRepository.findAlbumByArtistsArtistId(artistId);
   }
 
   public Set<Album> getAlbumByArtistName(String artistName) {
-    return albumRepository.findAlbumByArtistName(artistName);
+    return albumRepository.findAlbumByArtistsName(artistName);
   }
 
 }

@@ -8,7 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToMany;
 
 
 /**
@@ -24,10 +24,10 @@ public class Artist {
   private String name;
   private String genre;
 
-  @OneToMany(mappedBy = "artist", cascade = CascadeType.ALL)
+  @ManyToMany(mappedBy = "artists", cascade = CascadeType.ALL)
   private Set<Album> albums;
 
-  @OneToMany(mappedBy = "artist", cascade = CascadeType.ALL)
+  @ManyToMany(mappedBy = "artists", cascade = CascadeType.ALL)
   private Set<Song> songs;
 
   protected Artist() {

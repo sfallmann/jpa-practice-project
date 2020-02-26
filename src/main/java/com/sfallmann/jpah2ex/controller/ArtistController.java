@@ -1,18 +1,14 @@
 package com.sfallmann.jpah2ex.controller;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
-import com.fasterxml.jackson.annotation.JsonView;
-import com.sfallmann.jpah2ex.domain.Artist;
-import com.sfallmann.jpah2ex.dto.ArtistDto;
-import com.sfallmann.jpah2ex.jsonview.Views;
+import com.sfallmann.jpah2ex.dto.ArtistDetailsDto;
 import com.sfallmann.jpah2ex.service.ArtistService;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -30,20 +26,14 @@ public class ArtistController {
   }
 
   @RequestMapping("")
-  public List<ArtistDto> allArtists() {
-    return artistService.getArtists().stream().map(this::convertToDto).collect(Collectors.toList());
+  public List<?> allArtists(@RequestParam(defaultValue = "false") boolean withDetails) {
+    if (withDetails == true)
+      return artistService.getArtistsWithDetails();
+    return artistService.getArtists();
   }
 
-  @RequestMapping("/{id}")
-  @JsonView(Views.Detailed.class)
-  public Artist artistById(@PathVariable Long id) {
-    return artistService.getArtistById(id);
-  }
-
-  private ArtistDto convertToDto(Artist artist) {
-    ModelMapper modelMapper = new ModelMapper();
-    ArtistDto mm = modelMapper.map(artist, ArtistDto.class);
-    System.out.println("ArtistDto ################################################# " + artist.toString());
-    return mm;
+  @RequestMapping("/{artistId}")
+  public ArtistDetailsDto artistById(@PathVariable Long artistId) {
+    return artistService.getArtistByArtistId(artistId);
   }
 }

@@ -13,7 +13,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -31,14 +30,16 @@ public class Song {
   private Date releaseDate;
   private Integer year;
 
-  @ManyToOne(cascade = CascadeType.ALL)
-  @JoinColumn(name = "artist_Id", foreignKey = @ForeignKey(name = "fk_artist_song"), nullable=false)
-  private Artist artist;
+  @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+  @JoinTable(name = "song_artist", joinColumns = {
+      @JoinColumn(name = "song_id", referencedColumnName = "song_id", foreignKey = @ForeignKey(name = "fk_song_artist")) }, inverseJoinColumns = {
+          @JoinColumn(name = "artist_id", referencedColumnName = "artist_id", foreignKey = @ForeignKey(name = "fk_artist_song")) })
+  Set<Artist> artists;
 
   @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-  @JoinTable(name = "song_albums", joinColumns = {
-      @JoinColumn(name = "songs_id", referencedColumnName = "song_id", foreignKey = @ForeignKey(name = "fk_song_album")) }, inverseJoinColumns = {
-          @JoinColumn(name = "albums_id", referencedColumnName = "album_id", foreignKey = @ForeignKey(name = "fk_album_song")) })
+  @JoinTable(name = "song_album", joinColumns = {
+      @JoinColumn(name = "song_id", referencedColumnName = "song_id", foreignKey = @ForeignKey(name = "fk_song_album")) }, inverseJoinColumns = {
+          @JoinColumn(name = "album_id", referencedColumnName = "album_id", foreignKey = @ForeignKey(name = "fk_album_song")) })
   private Set<Album> albums;
 
   protected Song() {
@@ -51,11 +52,11 @@ public class Song {
    * @param artist
    * @param albums
    */
-  public Song(String name, Date releaseDate, Integer year, Artist artist, Set<Album> albums) {
+  public Song(String name, Date releaseDate, Integer year, Set<Artist> artists, Set<Album> albums) {
     this.name = name;
     this.releaseDate = releaseDate;
     this.year = year;
-    this.artist = artist;
+    this.artists = artists;
     this.albums = albums;
   }
 
@@ -116,20 +117,6 @@ public class Song {
   }
 
   /**
-   * @return the artist
-   */
-  public Artist getArtist() {
-    return artist;
-  }
-
-  /**
-   * @param artist the artist to set
-   */
-  public void setArtist(Artist artist) {
-    this.artist = artist;
-  }
-
-  /**
    * @return the albums
    */
   public Set<Album> getAlbums() {
@@ -143,17 +130,6 @@ public class Song {
     this.albums = albums;
   }
 
-  /*
-   * (non-Javadoc)
-   * 
-   * @see java.lang.Object#toString()
-   */
-
-  @Override
-  public String toString() {
-    return "Song [artist=" + artist + ", name=" + name + ", year=" + year + "]";
-  }
-
   public void addAlbum(Album album) {
     this.albums.add(album);
     album.getSongs().add(this);
@@ -164,53 +140,18 @@ public class Song {
     album.getSongs().remove(this);
   }
 
-  /*
-   * (non-Javadoc)
-   * 
-   * @see java.lang.Object#hashCode()
+  /**
+   * @return the artists
    */
-
-  @Override
-  public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + ((artist == null) ? 0 : artist.hashCode());
-    result = prime * result + ((songId == null) ? 0 : songId.hashCode());
-    result = prime * result + ((name == null) ? 0 : name.hashCode());
-    return result;
+  public Set<Artist> getArtists() {
+    return artists;
   }
 
-  /*
-   * (non-Javadoc)
-   * 
-   * @see java.lang.Object#equals(java.lang.Object)
+  /**
+   * @param artists the artists to set
    */
-
-  @Override
-  public boolean equals(Object obj) {
-    if (this == obj)
-      return true;
-    if (obj == null)
-      return false;
-    if (getClass() != obj.getClass())
-      return false;
-    Song other = (Song) obj;
-    if (artist == null) {
-      if (other.artist != null)
-        return false;
-    } else if (!artist.equals(other.artist))
-      return false;
-    if (songId == null) {
-      if (other.songId != null)
-        return false;
-    } else if (!songId.equals(other.songId))
-      return false;
-    if (name == null) {
-      if (other.name != null)
-        return false;
-    } else if (!name.equals(other.name))
-      return false;
-    return true;
+  public void setArtists(Set<Artist> artists) {
+    this.artists = artists;
   }
 
 }

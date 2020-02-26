@@ -11,8 +11,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -31,9 +31,11 @@ public class Album {
 
   private Integer year;
 
-  @ManyToOne(cascade = CascadeType.ALL)
-  @JoinColumn(name = "artist_Id", foreignKey = @ForeignKey(name = "fk_artist_album"), nullable=false)
-  private Artist artist;
+  @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+  @JoinTable(name = "album_artist", joinColumns = {
+      @JoinColumn(name = "album_id", referencedColumnName = "album_id", foreignKey = @ForeignKey(name = "fk_album_artist")) }, inverseJoinColumns = {
+          @JoinColumn(name = "artist_id", referencedColumnName = "artist_id", foreignKey = @ForeignKey(name = "fk_artist_album")) })
+  Set<Artist> artists;
 
   @ManyToMany(mappedBy = "albums", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
   private Set<Song> songs;
@@ -48,11 +50,11 @@ public class Album {
    * @param artist
    * @param songs
    */
-  public Album(String name, Date releaseDate, Integer year, Artist artist, Set<Song> songs) {
+  public Album(String name, Date releaseDate, Integer year, Set<Artist> artists, Set<Song> songs) {
     this.name = name;
     this.releaseDate = releaseDate;
     this.year = year;
-    this.artist = artist;
+    this.artists = artists;
     this.songs = songs;
   }
 
@@ -113,20 +115,6 @@ public class Album {
   }
 
   /**
-   * @return the artist
-   */
-  public Artist getArtist() {
-    return artist;
-  }
-
-  /**
-   * @param artist the artist to set
-   */
-  public void setArtist(Artist artist) {
-    this.artist = artist;
-  }
-
-  /**
    * @return the songs
    */
   public Set<Song> getSongs() {
@@ -138,76 +126,6 @@ public class Album {
    */
   public void setSongs(Set<Song> songs) {
     this.songs = songs;
-  }
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see java.lang.Object#toString()
-   */
-
-  @Override
-  public String toString() {
-    return "Album [artist=" + artist + ", name=" + name + ", year=" + year + "]";
-  }
-
-  public void addSong(Song song) {
-    this.songs.add(song);
-    song.getAlbums().add(this);
-  }
-
-  public void removeAlbum(Song song) {
-    this.songs.remove(song);
-    song.getAlbums().remove(this);
-  }
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see java.lang.Object#hashCode()
-   */
-
-  @Override
-  public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + ((artist == null) ? 0 : artist.hashCode());
-    result = prime * result + ((albumId == null) ? 0 : albumId.hashCode());
-    result = prime * result + ((name == null) ? 0 : name.hashCode());
-    return result;
-  }
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see java.lang.Object#equals(java.lang.Object)
-   */
-
-  @Override
-  public boolean equals(Object obj) {
-    if (this == obj)
-      return true;
-    if (obj == null)
-      return false;
-    if (getClass() != obj.getClass())
-      return false;
-    Album other = (Album) obj;
-    if (artist == null) {
-      if (other.artist != null)
-        return false;
-    } else if (!artist.equals(other.artist))
-      return false;
-    if (albumId == null) {
-      if (other.albumId != null)
-        return false;
-    } else if (!albumId.equals(other.albumId))
-      return false;
-    if (name == null) {
-      if (other.name != null)
-        return false;
-    } else if (!name.equals(other.name))
-      return false;
-    return true;
   }
 
 }

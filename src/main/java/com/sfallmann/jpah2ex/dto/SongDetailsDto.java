@@ -1,16 +1,20 @@
 package com.sfallmann.jpah2ex.dto;
 
 import java.util.Date;
+import java.util.Set;
 
-/**
- * SongDto
- */
-public class SongDto {
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "songId")
+public class SongDetailsDto {
 
   private Long songId;
   private String name;
   private Date releaseDate;
   private Integer year;
+  private Set<ArtistDto> artists;  
+  private Set<AlbumDto> albums;
 
   /**
    * @return the songId
@@ -68,10 +72,22 @@ public class SongDto {
     this.year = year;
   }
 
+
   /**
-   * 
+   * @return the albums
    */
-  public SongDto() {
+  public Set<AlbumDto> getAlbums() {
+    return albums;
+  }
+
+  /**
+   * @param albums the albums to set
+   */
+  public void setAlbums(Set<AlbumDto> albums) {
+    this.albums = albums;
+  }
+
+  public SongDetailsDto() {
   }
 
   /**
@@ -79,12 +95,29 @@ public class SongDto {
    * @param name
    * @param releaseDate
    * @param year
+   * @param artistId
+   * @param albums
    */
-  public SongDto(Long songId, String name, Date releaseDate, Integer year) {
+  public SongDetailsDto(Long songId, String name, Date releaseDate, Integer year, Set<ArtistDto> artists, Set<AlbumDto> albums) {
     this.songId = songId;
     this.name = name;
     this.releaseDate = releaseDate;
     this.year = year;
+    this.artists = artists;
+    this.albums = albums;
   }
-  
+
+  /**
+   * @return the artists
+   */
+  public Set<ArtistDto> getArtists() {
+    return artists;
+  }
+
+  /**
+   * @param artists the artists to set
+   */
+  public void setArtists(Set<ArtistDto> artists) {
+    this.artists = artists;
+  }
 }

@@ -11,6 +11,6 @@ import org.springframework.data.repository.CrudRepository;
  */
 public interface AlbumRepository extends CrudRepository<Album, Long>{
 
-  public Set<Album> findAlbumByArtistArtistId(Long artistId);
-  public Set<Album> findAlbumByArtistName(String artistName);
+  public Set<Album> findAlbumByArtistsArtistId(Long artistId);
+  public Set<Album> findAlbumByArtistsName(String artistName);
 }
