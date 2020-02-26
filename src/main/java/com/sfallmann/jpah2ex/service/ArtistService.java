@@ -1,6 +1,8 @@
 package com.sfallmann.jpah2ex.service;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.sfallmann.jpah2ex.Utils;
@@ -28,14 +30,16 @@ public class ArtistService {
     this.artistRepository = artistRepository;
   }
 
-  public List<ArtistDto> getArtists() {
-    return ((List<Artist>)artistRepository.findAll())
-    .stream().map(this::mapArtistToArtistDto).collect(Collectors.toList());
-  }  
+  public Set<?> findByCriteria(Map<String, String> criterias, Class<?> cls) {
+    List<Artist> artists = ((List<Artist>) artistRepository.findAll((root, query, criteriaBuilder) -> {
+      return Utils.filterBuilder(root, query, criteriaBuilder, criterias);
+    }));
 
-  public List<ArtistDetailsDto> getArtistsWithDetails() {
-    return ((List<Artist>)artistRepository.findAll())
-    .stream().map(this::mapArtistToArtistDetailsDto).collect(Collectors.toList());
+    if (cls == ArtistDetailsDto.class) {
+      return artists.stream().map(this::mapArtistToArtistDetailsDto).collect(Collectors.toSet());
+    } else {
+      return artists.stream().map(this::mapArtistToArtistDto).collect(Collectors.toSet());
+    }
   }
 
   public ArtistDetailsDto getArtistByArtistId(Long artistId) {

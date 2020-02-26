@@ -1,8 +1,10 @@
 package com.sfallmann.jpah2ex.controller;
 
-import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import com.sfallmann.jpah2ex.dto.ArtistDetailsDto;
+import com.sfallmann.jpah2ex.dto.ArtistDto;
 import com.sfallmann.jpah2ex.service.ArtistService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,10 +28,18 @@ public class ArtistController {
   }
 
   @RequestMapping("")
-  public List<?> allArtists(@RequestParam(defaultValue = "false") boolean withDetails) {
-    if (withDetails == true)
-      return artistService.getArtistsWithDetails();
-    return artistService.getArtists();
+  public Set<?> allArtists(@RequestParam(required = false) Map<String, String> allParams) {
+    String details = allParams.get("details");
+    if (details != null) {
+      allParams.remove("details");
+    }
+
+    if (details.equals("true")) {
+      return artistService.findByCriteria(allParams, ArtistDetailsDto.class);
+    } else {
+      return artistService.findByCriteria(allParams, ArtistDto.class);
+    }
+
   }
 
   @RequestMapping("/{artistId}")

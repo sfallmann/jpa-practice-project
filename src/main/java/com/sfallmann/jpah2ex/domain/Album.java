@@ -31,8 +31,9 @@ public class Album {
 
   private Integer year;
 
+  
   @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-  @JoinTable(name = "album_artist", joinColumns = {
+  @JoinTable(name = "artist_album", joinColumns = {
       @JoinColumn(name = "album_id", referencedColumnName = "album_id", foreignKey = @ForeignKey(name = "fk_album_artist")) }, inverseJoinColumns = {
           @JoinColumn(name = "artist_id", referencedColumnName = "artist_id", foreignKey = @ForeignKey(name = "fk_artist_album")) })
   Set<Artist> artists;
@@ -126,6 +127,57 @@ public class Album {
    */
   public void setSongs(Set<Song> songs) {
     this.songs = songs;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see java.lang.Object#hashCode()
+   */
+
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + ((albumId == null) ? 0 : albumId.hashCode());
+    return result;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see java.lang.Object#equals(java.lang.Object)
+   */
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj)
+      return true;
+    if (obj == null)
+      return false;
+    if (getClass() != obj.getClass())
+      return false;
+    Album other = (Album) obj;
+    if (albumId == null) {
+      if (other.albumId != null)
+        return false;
+    } else if (!albumId.equals(other.albumId))
+      return false;
+    return true;
+  }
+
+  /**
+   * @return the artists
+   */
+  public Set<Artist> getArtists() {
+    return artists;
+  }
+
+  /**
+   * @param artists the artists to set
+   */
+  public void setArtists(Set<Artist> artists) {
+    this.artists = artists;
   }
 
 }

@@ -92,7 +92,7 @@ public class AlbumDetailsDto {
    * @param name
    * @param releaseDate
    * @param year
-   * @param artistId
+   * @param artists
    * @param songs
    */
   public AlbumDetailsDto(Long albumId, String name, Date releaseDate, Integer year, Set<ArtistDto> artists, Set<SongDto> songs) {
@@ -122,5 +122,42 @@ public class AlbumDetailsDto {
    */
   public void setArtists(Set<ArtistDto> artists) {
     this.artists = artists;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see java.lang.Object#hashCode()
+   */
+
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + ((albumId == null) ? 0 : albumId.hashCode());
+    return result;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see java.lang.Object#equals(java.lang.Object)
+   */
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj)
+      return true;
+    if (obj == null)
+      return false;
+    if (getClass() != obj.getClass())
+      return false;
+    AlbumDetailsDto other = (AlbumDetailsDto) obj;
+    if (albumId == null) {
+      if (other.albumId != null)
+        return false;
+    } else if (!albumId.equals(other.albumId))
+      return false;
+    return true;
   }
 }

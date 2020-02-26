@@ -2,9 +2,13 @@ package com.sfallmann.jpah2ex.dto;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 /**
  * SongDto
  */
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "songId")
 public class SongDto {
 
   private Long songId;
@@ -85,6 +89,43 @@ public class SongDto {
     this.name = name;
     this.releaseDate = releaseDate;
     this.year = year;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see java.lang.Object#hashCode()
+   */
+
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + ((songId == null) ? 0 : songId.hashCode());
+    return result;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see java.lang.Object#equals(java.lang.Object)
+   */
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj)
+      return true;
+    if (obj == null)
+      return false;
+    if (getClass() != obj.getClass())
+      return false;
+    SongDto other = (SongDto) obj;
+    if (songId == null) {
+      if (other.songId != null)
+        return false;
+    } else if (!songId.equals(other.songId))
+      return false;
+    return true;
   }
   
 }

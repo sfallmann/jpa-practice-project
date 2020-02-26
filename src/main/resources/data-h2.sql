@@ -15,10 +15,10 @@ insert into song_artist(song_id, artist_id) values(1,2);
 insert into song_artist(song_id, artist_id) values(2,1);
 insert into song_artist(song_id, artist_id) values(3,1);
 
-insert into album_artist(album_id, artist_id) values(1,1);
-insert into album_artist(album_id, artist_id) values(2,1);
-insert into album_artist(album_id, artist_id) values(3,2);
-insert into album_artist(album_id, artist_id) values(4,2);
+insert into artist_album(album_id, artist_id) values(1,1);
+insert into artist_album(album_id, artist_id) values(2,1);
+insert into artist_album(album_id, artist_id) values(3,2);
+insert into artist_album(album_id, artist_id) values(4,2);
 
 insert into song_album(song_id, album_id) values(1,3);
 insert into song_album(song_id, album_id) values(1,4);
